@@ -17,10 +17,12 @@ installerFile := A_Temp "\ViGEmBus_Installer.exe"
 
 if !FileExist(driverPath) {
     UrlDownloadToFile, %installerURL%, %installerFile%
+
     if !FileExist(installerFile) {
         MsgBox, 16, Error, Failed to download the ViGEm installer!
         ExitApp
     }
+
     Run, %installerFile%, , RunAs
     MsgBox, 64, Info, ViGEm was not installed. The installer has been launched.
     ExitApp
@@ -50,20 +52,24 @@ yPos := 20
 Gui, Show, x%xPos% y%yPos% NoActivate, Overlay
 Gui, Hide
 
+active := false
+
 ; --- Toggle sounds true/false here ---
 sounds := true
 
 ; --- Toggle overlay true/false here ---
 overlay := true
 
-active := false
-
-; --- Change this key to whatever you want to toggle the controller on/off ---
+; --- Change this key to whatever you want to toggle ---
 5::
+    global active, sounds, overlay
+
     active := !active
+
     if (active) {
         if (sounds)
             SoundBeep, 1000
+
         if (overlay) {
             GuiControl,, StatusText, Active...
             ShowOverlay()
@@ -71,19 +77,21 @@ active := false
     } else {
         if (sounds)
             SoundBeep, 500
+
         if (overlay)
             HideOverlay()
+
         controller.Buttons.RB.SetState(false)
         controller.Buttons.X.SetState(false)
         controller.Triggers.RT.SetState(0)
         controller.Axes.RX.SetState(50)
         controller.Axes.RY.SetState(50)
     }
+
 return
 
 #If (active)
 
-; --- Sword Swing Key ---
 ; Change this key to whatever key you want to use for sword swinging.
 f::
     controller.Buttons.RB.SetState(true)
@@ -93,7 +101,6 @@ f up::
     controller.Buttons.RB.SetState(false)
 return
 
-; --- Interact Key ---
 ; Change this key to whatever key you want to use for interacting.
 e::
     controller.Buttons.X.SetState(true)

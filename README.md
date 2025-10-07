@@ -37,12 +37,12 @@
 ### revive.ahk
 
 1. Press `5` when the animation for the airlock door finishes (right after the latch spins around and locks)  
-2. Walk up to the player you want to revive  
-3. Wait; they will be revived automatically  
-4. Once they are revived, the macro will start swording via controller  
-5. Use the arrow keys or `IJKL` to look around (**do not use mouse!**)  
-6. Press `6` to stop swording or wait 15 seconds for it to finish  
-7. Pressing `6` will interrupt the current auto revive sequence  
+2. Waste your super
+3. Walk up to the player you want to revive and look at a wall  
+4. Wait; they will be revived automatically
+5. The macro will hold down `X` to revive and spam `RB` to sword  
+6. Use the arrow keys or `IJKL` to look around (**do not use mouse!**)  
+7. Swording will stop after `15` seconds  
 
 ![Revive](Resources/revive.gif)
 
@@ -54,31 +54,24 @@ To configure the macros, edit `rebind.ahk` or `revive.ahk` directly.
 
 ### Keybinds
 
-#### rebind.ahk
-
 - To change the toggle key, edit the following line:  
-![Rebind Toggle](Resources/rebind-toggle.png)
+![Toggle](Resources/toggle.png)
 
-- To change the sword and interact keys, edit the following line:  
-![Rebind Sword Interact](Resources/rebind-sword-interact.png)
+- To change the sword and interact keys, edit the following lines in `rebind.ahk`:  
+![Sword Interact](Resources/sword-interact.png)
 
 ---
-
-#### revive.ahk
-
-- To change the start and stop keys, edit the following lines:  
-![Revive Toggle](Resources/revive-toggle.png)
 
 ---
 
 ### Sounds
 
-- To toggle sounds, edit the following line in `rebind.ahk` or `revive.ahk`:  
+- To toggle sounds, edit the following line:  
 ![Sounds](Resources/sounds.png)
 
 ---
 
 ### Overlay
 
-- To toggle overlay, edit the following line in `rebind.ahk` or `revive.ahk`:  
+- To toggle overlay, edit the following line:  
 ![Overlay](Resources/overlay.png)
