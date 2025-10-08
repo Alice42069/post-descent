@@ -12,26 +12,41 @@ SetDefaultMouseSpeed, 0
 #include Lib\AHK-ViGEm-Bus.ahk
 
 driverPath := "C:\Program Files\Nefarius Software Solutions\ViGEm Bus Driver"
-installerURL := "https://github.com/nefarius/ViGEmBus/releases/download/v1.22.0/ViGEmBus_1.22.0_x64_x86_arm64.exe"
-installerFile := A_Temp "\ViGEmBus_Installer.exe"
+installer := A_ScriptDir "\Lib\ViGEmBus_1.22.0_x64_x86_arm64.exe"
 
 if !FileExist(driverPath) {
-    UrlDownloadToFile, %installerURL%, %installerFile%
+    if !FileExist(installer) {
+        MsgBox, 16, Installer Missing, ViGEm installer not found at:`n%installer%
 
-    if !FileExist(installerFile) {
-        MsgBox, 16, Error, Failed to download the ViGEm installer!
         ExitApp
     }
 
-    Run, %installerFile%, , RunAs
-    MsgBox, 64, Info, ViGEm was not installed. The installer has been launched.
-    ExitApp
+    MsgBox, 64, Installing ViGEm Driver, ViGEm Bus driver not found. The installer will run.
+
+    RunWait, %installer%, , RunAs
 }
+
+configFile := "settings.ini"
+defaultToggleKey := "5"
+
+if !FileExist(configFile) {
+    IniWrite, %defaultToggleKey%, %configFile%, Settings, ToggleKey
+}
+
+IniRead, toggleKey, %configFile%, Settings, ToggleKey, %defaultToggleKey%
 
 controller := new ViGEmXb360()
 controller.SubscribeFeedback(Func("OnFeedback"))
 OnFeedback(largeMotor, smallMotor, ledNumber) {
 }
+
+global active := false
+global togglePressed := false
+
+controller.Buttons.RB.SetState(false)
+controller.Buttons.X.SetState(false)
+controller.Axes.RX.SetState(50)
+controller.Axes.RY.SetState(50)
 
 ShowOverlay() {
     Gui, Show, NoActivate
@@ -52,17 +67,23 @@ yPos := 20
 Gui, Show, x%xPos% y%yPos% NoActivate, Overlay
 Gui, Hide
 
-active := false
-
 ; --- Toggle sounds true/false here ---
 sounds := true
 
 ; --- Toggle overlay true/false here ---
 overlay := true
 
-; --- Change this key to whatever you want to toggle ---
-5::
-    global active, sounds, overlay
+Hotkey, %toggleKey%, ToggleActive, Off
+
+Hotkey, %toggleKey%, ToggleActive, On
+
+ToggleActive:
+    global active, sounds, overlay, togglePressed
+
+    if (!togglePressed) {
+        togglePressed := true
+        return
+    }
 
     active := !active
 
@@ -83,7 +104,6 @@ overlay := true
 
         controller.Buttons.RB.SetState(false)
         controller.Buttons.X.SetState(false)
-        controller.Triggers.RT.SetState(0)
         controller.Axes.RX.SetState(50)
         controller.Axes.RY.SetState(50)
     }
@@ -92,7 +112,6 @@ return
 
 #If (active)
 
-; Change this key to whatever key you want to use for sword swinging.
 f::
     controller.Buttons.RB.SetState(true)
 return
@@ -101,7 +120,6 @@ f up::
     controller.Buttons.RB.SetState(false)
 return
 
-; Change this key to whatever key you want to use for interacting.
 e::
     controller.Buttons.X.SetState(true)
 return
